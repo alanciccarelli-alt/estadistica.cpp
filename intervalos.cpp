@@ -177,9 +177,13 @@ double calcularModaIntervalos(const vector<double>& datos, const vector<int>& fr
 
     int indiceModa = 0;
 
-    int bajada = indiceModa - frecuencias.back();
+    int bajada = 0;
 
-    int subida = indiceModa - frecuencias.size() - 1;
+    int subida = 0;
+
+    double proporcion = 0;
+
+
 
     int frecuenciaMaxima = frecuencias[0];
 
@@ -189,23 +193,28 @@ double calcularModaIntervalos(const vector<double>& datos, const vector<int>& fr
             indiceModa = i;
         }
     }
-    if(ultimaP <= frecuenciaAcumulada[i]) {
-
-    if(i > 0) {
-
-    medianaIntervalos = intervalos[i].first + ((ultimaP - frecuenciaAcumulada[i-1]) / frecuencias[i]) * amplitud;
-
+    if (indiceModa > 0 && indiceModa < frecuencias.size() - 1) {
+    // tiene subida y bajada
     }
+    else if (indiceModa == 0) {
+        // solo bajada
 
-    if(i == 0) {
+        bajada = frecuencias[indiceModa + 1] - frecuencias[indiceModa];
 
-      medianaIntervalos = intervalos[i].first + (ultimaP / frecuencias[i]) * amplitud;
+        proporcion = subida / (subida + bajada);
 
+        modaIntervalos = intervalos[0].first + proporcion * amplitud;
     }
+    else {
+    // solo subids
+        bajada = frecuencias[indiceModa - 1] - frecuencias[indiceModa];
 
-    break;
-    }
-    return datos[indiceModa];
+            proporcion = subida / (subida + bajada);
+
+        modaIntervalos = intervalos[0].first + proporcion * amplitud;
+}
+
+    return modaIntervalos;
 }
 
 
