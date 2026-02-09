@@ -91,17 +91,17 @@ int acumulada = 0;
 
 
 vector<double> calcularPuntosMedios(const vector<pair<double,double>>& intervalos) {
-    vector<double> valores;
+    vector<double> marcasDeClase;
 
     for (const pair<double,double>& intervalo : intervalos) {
         double limInf = intervalo.first;
         double limSup = intervalo.second;
 
         double puntoMedio = (limInf + limSup) / 2.0;
-        valores.push_back(puntoMedio);
+        marcasDeClase.push_back(puntoMedio);
     }
 
-    return valores;
+    return marcasDeClase;
 }
 
 double clasesPorFrecuencias(const vector <double>& valores,
@@ -173,48 +173,64 @@ if(ultimaP <= frecuenciaAcumulada[i]) {
 return medianaIntervalos;
 }
 
-double calcularModaIntervalos(const vector<double>& datos, const vector<int>& frecuencias) {
-
+double calcularModaIntervalos(
+    const vector<pair<double, double>>& intervalos,
+    const vector<int>& frecuencias,
+    double amplitud) {
     int indiceModa = 0;
-
-    int bajada = 0;
-
-    int subida = 0;
-
-    double proporcion = 0;
-
-
-
     int frecuenciaMaxima = frecuencias[0];
 
+    // 1️⃣ Encontrar el índice del intervalo modal
     for (size_t i = 1; i < frecuencias.size(); i++) {
         if (frecuencias[i] > frecuenciaMaxima) {
             frecuenciaMaxima = frecuencias[i];
             indiceModa = i;
         }
     }
+
+    int subida = 0;
+    int bajada = 0;
+
+    // 2️⃣ Calcular subida y bajada según la posición
     if (indiceModa > 0 && indiceModa < frecuencias.size() - 1) {
-    // tiene subida y bajada
+        // intervalo modal en el medio
+        subida = frecuencias[indiceModa] - frecuencias[indiceModa - 1];
+        bajada = frecuencias[indiceModa] - frecuencias[indiceModa + 1];
     }
     else if (indiceModa == 0) {
-        // solo bajada
-
-        bajada = frecuencias[indiceModa + 1] - frecuencias[indiceModa];
-
-        proporcion = subida / (subida + bajada);
-
-        modaIntervalos = intervalos[0].first + proporcion * amplitud;
+        // primer intervalo → solo bajada
+        subida = 0;
+        bajada = frecuencias[indiceModa] - frecuencias[indiceModa + 1];
     }
     else {
-    // solo subids
-        bajada = frecuencias[indiceModa - 1] - frecuencias[indiceModa];
+        // último intervalo → solo subida
+        subida = frecuencias[indiceModa] - frecuencias[indiceModa - 1];
+        bajada = 0;
+    }
 
-            proporcion = subida / (subida + bajada);
+    // 3️⃣ Proporción
+    double proporcion = subida / static_cast<double>(subida + bajada);
 
-        modaIntervalos = intervalos[0].first + proporcion * amplitud;
-}
+    // 4️⃣ Moda
+    double modaIntervalos =
+        intervalos[indiceModa].first + proporcion * amplitud;
 
     return modaIntervalos;
+}
+
+double calcularVarianzaPoblacionalIntervalos(const vector<double>& valores,
+                                             const vector<int>& frecuencias,
+                                             double media,
+                                             const vector<int>& frecuenciaAcumulada) {
+
+    double suma = 0;
+
+    for (size_t i = 0; i < valores.size(); i++) {
+        suma += pow(valores[i] - media, 2) * frecuencias[i];
+    }
+
+    return suma / static_cast<double>(frecuenciaAcumulada.back());
+
 }
 
 
@@ -229,9 +245,11 @@ void mostrarInfoIntervalos(double rango, int clases, double amplitud) {
     cout << "Amplitud (Sturges): " << amplitud << "\n";
 }
 
-void valos (double moda,
+void valos (double varianzaP,
+            double moda,
             double mediana,
             double media,
+            const vector<double>& marcasDeClase,
 const vector <pair<double, double>>& intervalos,
                              vector <int>& frecuencias,
                              vector <int> & frecuenciaAcumulada,
@@ -243,24 +261,25 @@ const vector <pair<double, double>>& intervalos,
     cout << "\n";
     cout << "-------------------------------INTERVALOS----------------------------------------\n";
 
+    cout << "\n";
+
     for(size_t i = 0; i < intervalos.size(); i++) {
 
     cout << "[" <<intervalos[i].first << ", " << intervalos[i].second << "]\n";
 
 }
-    cout << "\n\n";
+    cout << "\n";
     cout << "---------------------------TABLA DE FRECUENCIAS------------------------------------\n\n";
 
-        cout << " x | fi | fa | fr | fr% | fra\n";
+        cout << " marcas de clase | fi | fa | fr | fr% | fra\n\n";
 
-
-        cout << "[" <<intervalos[0].first << ", " << intervalos[0].second << "]" << " | " << frecuencias[0] << " | "  << frecuenciaAcumulada[0] << " | ";
+        cout << marcasDeClase[0] << " | " << frecuencias[0] << " | "  << frecuenciaAcumulada[0] << " | ";
         cout << frecuenciaRelativa[0] << " | " << frecuenciaRP[0] << "%" << " | " << frecuenciaRA[0] << "\n";
 
         for(size_t i = 1; i < frecuencias.size(); i++) {
 
-        cout << "[" <<intervalos[i].first << ", " << intervalos[i].second << "]" << " | " << frecuencias[i] << " | "  << frecuenciaAcumulada[i] << " | ";
-        cout << frecuenciaRelativa[i] << " | " << frecuenciaRP[i]<< "%" << " | " << frecuenciaRA[i] << "\n";
+        cout << marcasDeClase[i] << " | " << frecuencias[i] << " | "  << frecuenciaAcumulada[i] << " | ";
+        cout << frecuenciaRelativa[i] << " | " << frecuenciaRP[i]<< "%" << " | " << frecuenciaRA[i] << "\n\n";
         }
 
     cout << "-------------------------MEDIDAS DE TENDENCIA------------------------------------\n";
@@ -272,10 +291,10 @@ const vector <pair<double, double>>& intervalos,
     cout << "-------------------------MEDIDAS DE DISPERSION-----------------------------------\n";
 
     cout << "Rango: " << "\n";
-    cout << "Varianza Poblacional: " << "\n";
+    cout << "Varianza Poblacional: "<< varianzaP << "\n";
     cout << "Varianza Muestral: " << "\n";
-    cout << "Desv�o Poblacional: " << "\n";
-    cout << "Desv�o Muestral: " << "\n";
+    cout << "Desvío Poblacional: " << "\n";
+    cout << "Desvío Muestral: " << "\n";
     cout << "CV poblacional: " << "\n";
     cout << "CV muestral: " << "\n";
 

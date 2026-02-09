@@ -103,7 +103,6 @@ int main() {
             int cantidad = totalDatos();
 
             vector<double> datos = ingresarDatos(cantidad);
-            vector<double> valores;
             vector <pair<double, double>> intervalos;
             vector<int> frecuencias;
             vector<int> frecuenciaAcumulada;
@@ -125,6 +124,8 @@ int main() {
             amplitud,
             clases);
 
+            vector<double> marcasDeClase = calcularPuntosMedios(intervalos);
+
             tablaDeFrecuenciasIntervalos(
             datos,
             intervalos,
@@ -136,12 +137,16 @@ int main() {
 
             double media = calcularMediaIntervalos(intervalos, frecuencias);
             double mediana = calcularMedianaIntervalos(intervalos, frecuencias, frecuenciaAcumulada, amplitud);
-            double moda = calcularModaIntervalos(datos, frecuencias);
+            double moda = calcularModaIntervalos(intervalos, frecuencias, amplitud);
+
+            double varianzaP = calcularVarianzaPoblacionalIntervalos(marcasDeClase, frecuencias, media, frecuenciaAcumulada);
 
             valos(
+            varianzaP,
             moda,
             mediana,
             media,
+            marcasDeClase,
             intervalos,
             frecuencias,
             frecuenciaAcumulada,

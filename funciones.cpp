@@ -83,7 +83,7 @@ void mostrarDecimales(){
 // --------------------------
 
 void tablaDeFrecuencias(const vector<double>& datos,
-            vector <double>& valores,
+            vector <double>& marcasDeClase,
             vector <int>& frecuencias,
             vector <double>& frecuenciaAcumulada,
             vector <double>& frecuenciaRelativa,
@@ -102,14 +102,14 @@ void tablaDeFrecuencias(const vector<double>& datos,
             if (dato == valorActual) {
                 frecuenciaActual++;
             } else {
-                valores.push_back(valorActual);
+                marcasDeClase.push_back(valorActual);
                 frecuencias.push_back(frecuenciaActual);
 
                 valorActual = dato;
                 frecuenciaActual = 1;
             }
         }
-        valores.push_back(valorActual);
+        marcasDeClase.push_back(valorActual);
         frecuencias.push_back(frecuenciaActual);
 
         frecuenciaAcumulada.push_back(frecuencias[0]);
@@ -312,7 +312,7 @@ void mostrarResultados(
                        double media,
                       double mediana,
                       const vector<double>& datos,
-                      vector<double>& valores,
+                      vector<double>& marcasDeClase,
                       vector<int>& frecuencias,
                       vector<double>& frecuenciaAcumulada,
                       vector<double>& frecuenciaRelativa,
@@ -329,21 +329,19 @@ for (double x : datos) {
     cout << "\n\n";
     cout << "---------------------------TABLA DE FRECUENCIAS------------------------------------\n\n";
 
-        cout << " x | fi | fa | fr | fr% | fra\n";
+        cout << " x | fi | fa | fr | fr% | fra\n\n";
 
-
-        cout << " " << valores [0] << " | " << frecuencias[0] << " | "  << frecuenciaAcumulada[0] << " | ";
+        cout << " " << marcasDeClase [0] << " | " << frecuencias[0] << " | "  << frecuenciaAcumulada[0] << " | ";
         cout << frecuenciaRelativa[0] << " | " << frecuenciaRP[0] << "%" << " | " << frecuenciaRA[0] << "\n";
 
-        for(size_t i = 1; i < valores.size(); i++) {
+        for(size_t i = 1; i < marcasDeClase.size(); i++) {
 
-        cout << " " << valores [i] << " | " << frecuencias[i] << " | "  << frecuenciaAcumulada[i] << " | ";
+        cout << " " << marcasDeClase [i] << " | " << frecuencias[i] << " | "  << frecuenciaAcumulada[i] << " | ";
         cout << frecuenciaRelativa[i] << " | " << frecuenciaRP[i]<< "%" << " | " << frecuenciaRA[i] << "\n";
 
     }
 
-    cout << "\n\n";
-
+    cout << "\n";
 
     cout << "---------------------------DIAGRAMA DE BARRAS------------------------------------\n\n";
 
@@ -364,9 +362,9 @@ for (int f : frecuencias) {
     cout << "\n";
 }
 
-    for(size_t i = 0; i < valores.size(); i++) {
+    for(size_t i = 0; i < marcasDeClase.size(); i++) {
 
-        cout << " " << valores [i] <<  " ";
+        cout << " " << marcasDeClase [i] <<  " ";
 
     }
 
