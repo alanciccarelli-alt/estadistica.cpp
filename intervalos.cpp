@@ -218,10 +218,23 @@ double calcularModaIntervalos(
     return modaIntervalos;
 }
 
+//     RANGO (MEDIDA DE DISPERSION)
+// -------------------------------------
+
+double rangoDispersion(const vector<pair<double, double>>& intervalos) {
+
+    if(intervalos.empty()) return 0.0; // chequeo de seguridad
+
+    return intervalos.back().second - intervalos[0].first;
+}
+
+
 double calcularVarianzaPoblacionalIntervalos(const vector<double>& valores,
                                              const vector<int>& frecuencias,
                                              double media,
                                              const vector<int>& frecuenciaAcumulada) {
+
+    double varianzaP = 0;
 
     double suma = 0;
 
@@ -229,23 +242,81 @@ double calcularVarianzaPoblacionalIntervalos(const vector<double>& valores,
         suma += pow(valores[i] - media, 2) * frecuencias[i];
     }
 
-    return suma / static_cast<double>(frecuenciaAcumulada.back());
+    return varianzaP = suma / frecuenciaAcumulada.back();
 
 }
 
+double calcularVarianzaMuestralIntervalos(const vector<double>& valores,
+                                             const vector<int>& frecuencias,
+                                             double media,
+                                             const vector<int>& frecuenciaAcumulada) {
+
+    double varianzaM = 0;
+
+    double suma = 0;
+
+    for (size_t i = 0; i < valores.size(); i++) {
+        suma += pow(valores[i] - media, 2) * frecuencias[i];
+    }
+
+    return varianzaM = suma / (frecuenciaAcumulada.back() - 1);
+
+}
+
+double calcularDesvioPoblacionalIntervalos(double varianzaP) {
+
+    return sqrt(varianzaP);
+
+}
+
+double calcularDesvioMuestralIntervalos(double varianzaM) {
+
+    return sqrt(varianzaM);
+
+}
+
+// COEFICIENTE DE VARIACION PONBLACIONAL
+// -------------------------------------
+
+double CVpoblacionalIntervalos(double desvioP, double media) {
+
+double CV = desvioP / media;
+
+return CV * 100;
+
+}
+
+// COEFICIENTE DE VARIACION MUESTRAL
+// ---------------------------------
+
+double CVmuestralIntervalos(double desvioM, double media) {
+
+double CV = desvioM / media;
+
+return CV * 100;
+
+}
 
 void mostrarInfoIntervalos(double rango, int clases, double amplitud) {
 
     cout << "--------------------------------------------------------------------------------\n";
 
-    cout << "Rango: " << rango << "\n";
+    cout << "Rango (datos): " << rango << "\n";
 
     cout << "Clases: " << clases << "\n";
 
     cout << "Amplitud (Sturges): " << amplitud << "\n";
 }
 
-void valos (double varianzaP,
+void valos (string interpretacionCVp,
+            string interpretacionCVm,
+            double cvP,
+            double cvM,
+            double desvioM,
+            double desvioP,
+            double varianzaM,
+            double varianzaP,
+            double rango,
             double moda,
             double mediana,
             double media,
@@ -290,13 +361,13 @@ const vector <pair<double, double>>& intervalos,
 
     cout << "-------------------------MEDIDAS DE DISPERSION-----------------------------------\n";
 
-    cout << "Rango: " << "\n";
+    cout << "Rango: " << rango << "\n";
     cout << "Varianza Poblacional: "<< varianzaP << "\n";
-    cout << "Varianza Muestral: " << "\n";
-    cout << "Desvío Poblacional: " << "\n";
-    cout << "Desvío Muestral: " << "\n";
-    cout << "CV poblacional: " << "\n";
-    cout << "CV muestral: " << "\n";
+    cout << "Varianza Muestral: " << varianzaM << "\n";
+    cout << "Desvío Poblacional: " << desvioP << "\n";
+    cout << "Desvío Muestral: " << desvioM << "\n";
+    cout << "CV poblacional: " << cvP << "% : " << interpretacionCVp << "\n";
+    cout << "CV muestral: " << cvM << "% : " << interpretacionCVm << "\n";
 
     cout << "-----------------------------------------------------------------------------------\n";
 }

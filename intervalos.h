@@ -27,6 +27,8 @@ double calcularModaIntervalos(
     const vector<int>& frecuencias,
     double amplitud);
 
+double rangoDispersion(const vector<pair<double, double>>& intervalos);
+
 vector<pair<double, double>> calcularIntervalos(
     const vector<double>& datos,
     double amplitud,
@@ -38,6 +40,19 @@ double calcularVarianzaPoblacionalIntervalos(const vector<double>& valores,
                                              double media,
                                              const vector<int>& frecuenciaAcumulada);
 
+double calcularVarianzaMuestralIntervalos(const vector<double>& valores,
+                                             const vector<int>& frecuencias,
+                                             double media,
+                                             const vector<int>& frecuenciaAcumulada);
+
+double calcularDesvioPoblacionalIntervalos(double varianzaP);
+
+double calcularDesvioMuestralIntervalos(double varianzaM);
+
+double CVpoblacionalIntervalos(double desvioP, double media);
+
+double CVmuestralIntervalos(double desvioM, double media);
+
 void tablaDeFrecuenciasIntervalos(const vector <double>& datos,
                              const vector <pair<double, double>>& intervalos,
                              vector <int>& frecuencias,
@@ -47,7 +62,16 @@ void tablaDeFrecuenciasIntervalos(const vector <double>& datos,
                              vector <double>& frecuenciaRA);
 
 
-void valos(double varianzaP,
+void valos(
+           string interpretacionCVp,
+           string interpretacionCVm,
+           double cvP,
+           double cvM,
+           double desvioM,
+           double desvioP,
+           double varianzaM,
+           double varianzaP,
+           double rango,
            double moda,
            double mediana,
            double media,

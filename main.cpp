@@ -110,11 +110,11 @@ int main() {
             vector<double> frecuenciaRP;
             vector<double> frecuenciaRA;
 
-            double rango = calcularRango(datos);
+            double rangoDatos = calcularRango(datos);
 
             int clases = calcularClasesSturges(datos.size());
 
-            double amplitud = calcularAmplitud(rango, clases);
+            double amplitud = calcularAmplitud(rangoDatos, clases);
 
 
             mostrarDecimales();
@@ -139,10 +139,27 @@ int main() {
             double mediana = calcularMedianaIntervalos(intervalos, frecuencias, frecuenciaAcumulada, amplitud);
             double moda = calcularModaIntervalos(intervalos, frecuencias, amplitud);
 
+            double rango = rangoDispersion(intervalos);
             double varianzaP = calcularVarianzaPoblacionalIntervalos(marcasDeClase, frecuencias, media, frecuenciaAcumulada);
+            double varianzaM = calcularVarianzaMuestralIntervalos(marcasDeClase, frecuencias, media, frecuenciaAcumulada);
+            double desvioP = calcularDesvioPoblacionalIntervalos(varianzaP);
+            double desvioM = calcularDesvioMuestralIntervalos(varianzaM);
+            double cvP = CVpoblacionalIntervalos(desvioP, media);
+            double cvM = CVmuestralIntervalos(desvioM, media);
+
+            string interpretacionCVp = interpretacionCV(cvP);
+            string interpretacionCVm = interpretacionCV(cvM);
 
             valos(
+            interpretacionCVp,
+            interpretacionCVm,
+            cvP,
+            cvM,
+            desvioM,
+            desvioP,
+            varianzaM,
             varianzaP,
+            rango,
             moda,
             mediana,
             media,
