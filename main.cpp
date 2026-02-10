@@ -135,6 +135,10 @@ int main() {
             frecuenciaRP,
             frecuenciaRA);
 
+            int indiceModa = encontrarIndiceModal(frecuencias);
+
+            double proporcion = calcularProporcion(frecuencias, indiceModa);
+
             double media = calcularMediaIntervalos(intervalos, frecuencias);
             double mediana = calcularMedianaIntervalos(intervalos, frecuencias, frecuenciaAcumulada, amplitud);
             double moda = calcularModaIntervalos(intervalos, frecuencias, amplitud);

@@ -62,22 +62,22 @@
 	<cmath>
 	<iomanip>
 
-1768765041 c:\users\wz\desktop\git\funciones.h
+1770688002 c:\users\wz\desktop\git\funciones.h
 	<vector>
 	<string>
 
-1770656738 source:c:\users\wz\desktop\git\main.cpp
+1770684970 source:c:\users\wz\desktop\git\main.cpp
 	<string>
 	<iostream>
 	<iomanip>
 	"funciones.h"
 	"intervalos.h"
 
-1770663662 c:\users\wz\desktop\git\intervalos.h
+1770698037 c:\users\wz\desktop\git\intervalos.h
 	<vector>
 	<utility>
 
-1770663662 source:c:\users\wz\desktop\git\intervalos.cpp
+1770698037 source:c:\users\wz\desktop\git\intervalos.cpp
 	"funciones.h"
 	"intervalos.h"
 	<cmath>

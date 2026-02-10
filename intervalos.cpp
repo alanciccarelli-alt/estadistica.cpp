@@ -173,25 +173,32 @@ if(ultimaP <= frecuenciaAcumulada[i]) {
 return medianaIntervalos;
 }
 
-double calcularModaIntervalos(
-    const vector<pair<double, double>>& intervalos,
-    const vector<int>& frecuencias,
-    double amplitud) {
+int encontrarIndiceModal(const vector<int>& frecuencias) {
+
     int indiceModa = 0;
+
     int frecuenciaMaxima = frecuencias[0];
 
-    // 1️⃣ Encontrar el índice del intervalo modal
+    // Encontrar el índice del intervalo modal
     for (size_t i = 1; i < frecuencias.size(); i++) {
         if (frecuencias[i] > frecuenciaMaxima) {
             frecuenciaMaxima = frecuencias[i];
             indiceModa = i;
         }
     }
+    return indiceModa;
+}
+
+double calcularProporcion(const vector<int>& frecuencias,
+                          int indiceModa) {
 
     int subida = 0;
+
     int bajada = 0;
 
-    // 2️⃣ Calcular subida y bajada según la posición
+    double proporcion = 0;
+
+    // Calcular subida y bajada según la posición
     if (indiceModa > 0 && indiceModa < frecuencias.size() - 1) {
         // intervalo modal en el medio
         subida = frecuencias[indiceModa] - frecuencias[indiceModa - 1];
@@ -208,14 +215,22 @@ double calcularModaIntervalos(
         bajada = 0;
     }
 
-    // 3️⃣ Proporción
-    double proporcion = subida / static_cast<double>(subida + bajada);
+    proporcion = subida / static_cast<double>(subida + bajada);
 
-    // 4️⃣ Moda
-    double modaIntervalos =
-        intervalos[indiceModa].first + proporcion * amplitud;
 
-    return modaIntervalos;
+    return proporcion;
+}
+
+double calcularModaIntervalos (const vector <pair<double, double>>& intervalos,
+                               const vector<int>& frecuencias,
+                               double amplitud) {
+
+    int indiceModa = encontrarIndiceModal(frecuencias);
+
+    double proporcion = calcularProporcion(frecuencias, indiceModa);
+
+    return intervalos[indiceModa].first + proporcion * amplitud;
+
 }
 
 //     RANGO (MEDIDA DE DISPERSION)

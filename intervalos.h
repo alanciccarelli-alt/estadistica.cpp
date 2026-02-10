@@ -22,12 +22,24 @@ double calcularMedianaIntervalos(const vector <pair<double, double>>& intervalos
                                 const vector <int> & frecuenciaAcumulada,
                                 double amplitud);
 
-double calcularModaIntervalos(
-    const vector<pair<double, double>>& intervalos,
-    const vector<int>& frecuencias,
-    double amplitud);
+int encontrarIndiceModal(const vector<int>& frecuencias);
+
+double calcularProporcion(const vector<int>& frecuencias,
+                          int indiceModa);
+
+double calcularModaIntervalos (const vector <pair<double, double>>& intervalos,
+                               const vector<int>& frecuencias,
+                               double amplitud);
 
 double rangoDispersion(const vector<pair<double, double>>& intervalos);
+
+double calcularProporcion(const vector<int>& frecuencias,
+                          int indiceModa);
+
+double calcularModaIntervalos (const vector <pair<double, double>>& intervalos,
+                               int indiceModa,
+                               double proporcion,
+                               double amplitud);
 
 vector<pair<double, double>> calcularIntervalos(
     const vector<double>& datos,

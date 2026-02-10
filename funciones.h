@@ -65,6 +65,8 @@ double varianzaM,
 double varianzaP,
 double rango,
 double moda,
+
+
 double media,
 double mediana,
 const vector<double>& datos,
