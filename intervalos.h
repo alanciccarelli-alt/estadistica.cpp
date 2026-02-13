@@ -17,12 +17,22 @@ double mediaIntervalos (const vector <int> & frecuencias,
 double calcularMediaIntervalos (const vector <pair<double, double>>& intervalos,
                                 const vector <int>& frecuencias);
 
-double calcularMedianaIntervalos(const vector <pair<double, double>>& intervalos,
-                                const vector <int>& frecuencias,
-                                const vector <int> & frecuenciaAcumulada,
-                                double amplitud);
+size_t encontrarIndiceMediana(const vector<int>& frecuenciaAcumulada);
 
-int encontrarIndiceModal(const vector<int>& frecuencias);
+double calcularMedianaIntervalos(
+    const vector<pair<double, double>>& intervalos,
+    const vector<int>& frecuencias,
+    const vector<int>& frecuenciaAcumulada,
+    double amplitud);
+
+
+vector<pair<double, double>> calcularIntervalos(
+    const vector<double>& datos,
+    double amplitud,
+    int clases
+);
+
+size_t encontrarIndiceModal(const vector<int>& frecuencias);
 
 double calcularProporcion(const vector<int>& frecuencias,
                           int indiceModa);
@@ -32,20 +42,6 @@ double calcularModaIntervalos (const vector <pair<double, double>>& intervalos,
                                double amplitud);
 
 double rangoDispersion(const vector<pair<double, double>>& intervalos);
-
-double calcularProporcion(const vector<int>& frecuencias,
-                          int indiceModa);
-
-double calcularModaIntervalos (const vector <pair<double, double>>& intervalos,
-                               int indiceModa,
-                               double proporcion,
-                               double amplitud);
-
-vector<pair<double, double>> calcularIntervalos(
-    const vector<double>& datos,
-    double amplitud,
-    int clases
-);
 
 double calcularVarianzaPoblacionalIntervalos(const vector<double>& valores,
                                              const vector<int>& frecuencias,
@@ -74,24 +70,5 @@ void tablaDeFrecuenciasIntervalos(const vector <double>& datos,
                              vector <double>& frecuenciaRA);
 
 
-void valos(
-           string interpretacionCVp,
-           string interpretacionCVm,
-           double cvP,
-           double cvM,
-           double desvioM,
-           double desvioP,
-           double varianzaM,
-           double varianzaP,
-           double rango,
-           double moda,
-           double mediana,
-           double media,
-           const vector<double>& marcasDeClase,
-const vector <pair<double, double>>& intervalos,
-                             vector <int>& frecuencias,
-                             vector <int> & frecuenciaAcumulada,
-                             vector<double>& frecuenciaRelativa,
-                             vector<double>& frecuenciaRP,
-                             vector <double>& frecuenciaRA);
+void valos(const resultadosEstadisticos& r);
 #endif

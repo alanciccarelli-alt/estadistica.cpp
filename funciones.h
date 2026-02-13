@@ -5,18 +5,26 @@
 #include <string>
 using namespace std;
 
+int leerEntero();
+
+bool esValido(int n, int min, int max);
+
 int totalDatos();
+
+double leerDato(int i);
 
 vector<double> ingresarDatos(int cantidad);
 
-void mostrarDecimales();
+int pedirDecimales();
+
+void aplicarDecimales(int decimales);
 
 void tablaDeFrecuencias
 (
  const vector<double>& datos,
  vector <double>& valores,
  vector <int>& frecuencias,
- vector <double>& frecuenciaAcumulada,
+ vector <int>& frecuenciaAcumulada,
  vector <double>& frecuenciaRelativa,
  vector <double>& frecuenciaRP,
  vector <double>& frecuenciaRA
@@ -49,33 +57,35 @@ double CVmuestral (const vector <double>& datos);
 
 string interpretacionCV (double CV);
 
+struct resultadosEstadisticos {
+    double rangoDatos;
+    double clases;
+    double amplitud;
+    string interpretacionCVp;
+    string interpretacionCVm;
+    double cvP;
+    double cvM;
+    double desvioP;
+    double desvioM;
+    double varianzaM;
+    double varianzaP;
+    double rango;
+    double moda;
+    double media;
+    double mediana;
+    vector <pair<double, double>> intervalos;
+    vector<double> datos;
+    vector<double> marcasDeClase;
+    vector<int> frecuencias;
+    vector<int> frecuenciaAcumulada;
+    vector<double> frecuenciaRelativa;
+    vector<double> frecuenciaRP;
+    vector<double> frecuenciaRA;
+};
 
 //  MOSTRAR RESULTADOS
 //-------------------------
 
-void mostrarResultados
-(
-string interpretacionCVp,
-string interpretacionCVm,
-double cvP,
-double cvM,
-double desvioP,
-double desvioM,
-double varianzaM,
-double varianzaP,
-double rango,
-double moda,
-
-
-double media,
-double mediana,
-const vector<double>& datos,
-vector<double>& valores,
-vector<int>& frecuencias,
-vector<double>& frecuenciaAcumulada,
-vector<double>& frecuenciaRelativa,
-vector<double>& frecuenciaRP,
-vector<double>& frecuenciaRA
-);
+void mostrarResultados(const resultadosEstadisticos& r);
 
 #endif

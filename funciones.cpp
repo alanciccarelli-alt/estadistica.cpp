@@ -8,76 +8,87 @@ using namespace std;
 //         TOTAL DATOS
 // --------------------------
 
+int leerEntero() {
+    int n;
+    cin >> n;
+    return n;
+}
+
+bool esValido(int n, int min, int max) {
+    return n >= min && n <= max;
+}
+
 int totalDatos() {
     int n;
 
-    do{
+    cout << "----------------------------------------------------------------------------------\n";
+
+    do {
+        cout << "Ingrese la cantidad de datos: ";
+        n = leerEntero();
+        if (!esValido(n, 0, 20)) {
+            cout << "Opción no válida (" << n << ").\n";
+        }
 
     cout << "----------------------------------------------------------------------------------\n";
 
-    cout << "Ingrese la cantidad de datos: ";
-
-    cin >> n;
-
-
-    if(n < 0 || n > 6) {
-
-    cout << "Opcion no valida (" << n << "), elija entre 0 y 20.\n";
-
-    }
-
-    }while(n > 20 || n < 0);
+    } while (!esValido(n, 0, 20));
     return n;
 }
 
 //      INGRESAR DATOS
 // --------------------------
 
+double leerDato(int i) {
+
+    double valor;
+
+    cout << "Dato " << i + 1 << ": ";
+
+    cin >> valor;
+
+    return valor;
+}
+
 vector<double> ingresarDatos(int cantidad) {
 
     vector<double> datos(cantidad);
 
-    for (int i = 0; i < cantidad; i++) {
-        cout << "----------------------------------------------------------------------------------\n\n";
+    for (size_t i = 0; i < cantidad; i++) {
 
-
-        cout << "Dato " << i + 1 << ": ";
-
-        cin >> datos[i];
-
+        datos[i] = leerDato(i);
     }
-sort (datos.begin(), datos.end());
-
+    sort(datos.begin(), datos.end());
     return datos;
 }
+
 
 // MOSTRAR DECIMALES
 // --------------------------
 
-void mostrarDecimales(){
+int pedirDecimales() {
 
+    int dec;
 
-        int decimales;
+    cout << "----------------------------------------------------------------------------------\n";
 
-    do{
-        cout << "----------------------------------------------------------------------------------\n";
-
+    do {
         cout << "Ingrese la cantidad de decimales a mostrar: ";
-
-        cin >> decimales;
-
-        cout << fixed << setprecision(decimales);
-
-        if(decimales < 0 || decimales > 6) {
-
-    cout << "Opcion no valida (" << decimales << "), elija entre 0 y 6.\n";
-
-
+        cin >> dec;
+        if (dec < 0 || dec > 6) {
+            cout << "Opción no válida (" << dec << ").\n";
         }
 
-    }while(decimales < 0 || decimales > 6);
+    cout << "----------------------------------------------------------------------------------\n";
 
+    } while (dec < 0 || dec > 6);
+    return dec;
 }
+
+void aplicarDecimales(int decimales) {
+    cout << fixed << setprecision(decimales);
+}
+
 
 //    TABLA DE FRECUENCIAS
 // --------------------------
@@ -85,7 +96,7 @@ void mostrarDecimales(){
 void tablaDeFrecuencias(const vector<double>& datos,
             vector <double>& marcasDeClase,
             vector <int>& frecuencias,
-            vector <double>& frecuenciaAcumulada,
+            vector <int>& frecuenciaAcumulada,
             vector <double>& frecuenciaRelativa,
             vector <double>& frecuenciaRP,
             vector <double>& frecuenciaRA) {
@@ -190,7 +201,9 @@ double calcularModa(const vector<double>& datos, const vector<int>& frecuencias)
 // --------------------------
 
 double calcularRango(const vector<double>& datos) {
+
     double minimo = *min_element(datos.begin(), datos.end());
+
     double maximo = *max_element(datos.begin(), datos.end());
     return maximo - minimo;
 }
@@ -224,7 +237,9 @@ double calcularVarianzaPoblacional(const vector <double>& datos) {
 double calcularVarianzaMuestral(const vector <double>& datos) {
 
     vector <double> cuadrados;
+
     double media = calcularMedia(datos);
+
     double sumaCuadrados = 0;
 
     for(size_t i = 0; i < datos.size(); i++) {
@@ -298,30 +313,14 @@ else return "No representativo (variabilidad muy alta)";
 
 //        MOSTRAR RESULTADOS
 // ----------------------------------
-void mostrarResultados(
-                       string interpretacionCVp,
-                       string interpretacionCVm,
-                       double cvP,
-                       double cvM,
-                    double desvioP,
-                    double desvioM,
-                    double varianzaM,
-                    double varianzaP,
-                       double rango,
-                       double moda,
-                       double media,
-                      double mediana,
-                      const vector<double>& datos,
-                      vector<double>& marcasDeClase,
-                      vector<int>& frecuencias,
-                      vector<double>& frecuenciaAcumulada,
-                      vector<double>& frecuenciaRelativa,
-                      vector<double>& frecuenciaRP,
-                      vector<double>& frecuenciaRA) {
+
+void mostrarResultados(const resultadosEstadisticos& r)
+
+ {
 
     cout << "--------------------------------DATOS ORDENADOS-----------------------------------\n\n";
 
-for (double x : datos) {
+for (double x : r.datos) {
     cout << "- " << x << " ";
 
 }
@@ -331,13 +330,13 @@ for (double x : datos) {
 
         cout << " x | fi | fa | fr | fr% | fra\n\n";
 
-        cout << " " << marcasDeClase [0] << " | " << frecuencias[0] << " | "  << frecuenciaAcumulada[0] << " | ";
-        cout << frecuenciaRelativa[0] << " | " << frecuenciaRP[0] << "%" << " | " << frecuenciaRA[0] << "\n";
+        cout << " " << r.marcasDeClase [0] << " | " << r.frecuencias[0] << " | "  << r.frecuenciaAcumulada[0] << " | ";
+        cout << r.frecuenciaRelativa[0] << " | " << r.frecuenciaRP[0] << "%" << " | " << r.frecuenciaRA[0] << "\n";
 
-        for(size_t i = 1; i < marcasDeClase.size(); i++) {
+        for(size_t i = 1; i < r.marcasDeClase.size(); i++) {
 
-        cout << " " << marcasDeClase [i] << " | " << frecuencias[i] << " | "  << frecuenciaAcumulada[i] << " | ";
-        cout << frecuenciaRelativa[i] << " | " << frecuenciaRP[i]<< "%" << " | " << frecuenciaRA[i] << "\n";
+        cout << " " << r.marcasDeClase [i] << " | " << r.frecuencias[i] << " | "  << r.frecuenciaAcumulada[i] << " | ";
+        cout << r.frecuenciaRelativa[i] << " | " << r.frecuenciaRP[i]<< "%" << " | " << r.frecuenciaRA[i] << "\n";
 
     }
 
@@ -345,15 +344,15 @@ for (double x : datos) {
 
     cout << "---------------------------DIAGRAMA DE BARRAS------------------------------------\n\n";
 
-int maxNivel = frecuencias[0];
-for (int f : frecuencias) {
+int maxNivel = r.frecuencias[0];
+for (int f : r.frecuencias) {
     if (f > maxNivel)
         maxNivel = f;
 }
 
   for (int nivel = maxNivel; nivel >= 1; nivel--) {
-    for (size_t i = 0; i < frecuencias.size(); i++) {
-        if (frecuencias[i] >= nivel)
+    for (size_t i = 0; i < r.frecuencias.size(); i++) {
+        if (r.frecuencias[i] >= nivel)
             cout << " O ";
         else
             cout << "   ";
@@ -362,9 +361,9 @@ for (int f : frecuencias) {
     cout << "\n";
 }
 
-    for(size_t i = 0; i < marcasDeClase.size(); i++) {
+    for(size_t i = 0; i < r.marcasDeClase.size(); i++) {
 
-        cout << " " << marcasDeClase [i] <<  " ";
+        cout << " " << r.marcasDeClase [i] <<  " ";
 
     }
 
@@ -372,19 +371,19 @@ for (int f : frecuencias) {
 
     cout << "-------------------------MEDIDAS DE TENDENCIA------------------------------------\n";
 
-    cout << "Media: " << media << "\n";
-    cout << "Mediana: " << mediana << "\n";
-    cout << "Moda: " << moda << "\n";
+    cout << "Media: " << r.media << "\n";
+    cout << "Mediana: " << r.mediana << "\n";
+    cout << "Moda: " << r.moda << "\n";
 
     cout << "-------------------------MEDIDAS DE DISPERSION-----------------------------------\n";
 
-    cout << "Rango: " << rango << "\n";
-    cout << "Varianza Poblacional: " << varianzaP << "\n";
-    cout << "Varianza Muestral: " << varianzaM << "\n";
-    cout << "Desvío Poblacional: " << desvioP << "\n";
-    cout << "Desvío Muestral: " << desvioM << "\n";
-    cout << "CV poblacional: " << cvP << "% : " << interpretacionCVp << "\n";
-    cout << "CV muestral: " << cvM << "% : " << interpretacionCVm << "\n";
+    cout << "Rango: " << r.rango << "\n";
+    cout << "Varianza Poblacional: " << r.varianzaP << "\n";
+    cout << "Varianza Muestral: " << r.varianzaM << "\n";
+    cout << "Desvío Poblacional: " << r.desvioP << "\n";
+    cout << "Desvío Muestral: " << r.desvioM << "\n";
+    cout << "CV poblacional: " << r.cvP << "% : " << r.interpretacionCVp << "\n";
+    cout << "CV muestral: " << r.cvM << "% : " << r.interpretacionCVm << "\n";
 
     cout << "-----------------------------------------------------------------------------------\n";
 }

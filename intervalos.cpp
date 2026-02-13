@@ -140,40 +140,29 @@ double calcularMediaIntervalos (const vector <pair<double, double>>& intervalos,
             return mediaIntervalos(frecuencias, suma);
             }
 
-double calcularMedianaIntervalos(const vector <pair<double, double>>& intervalos,
-                                const vector <int>& frecuencias,
-                                const vector <int> & frecuenciaAcumulada,
-                                double amplitud) {
-
-double medianaIntervalos = 0;
-
-double ultimaP = frecuenciaAcumulada.back() / 2;
-
-for(size_t i = 0; i < frecuenciaAcumulada. size(); i++) {
-
-
-if(ultimaP <= frecuenciaAcumulada[i]) {
-
-    if(i > 0) {
-
-    medianaIntervalos = intervalos[i].first + ((ultimaP - frecuenciaAcumulada[i-1]) / frecuencias[i]) * amplitud;
-
+size_t indiceIntervaloMediana(const vector<int>& frecuenciaAcumulada) {
+    double mitad = frecuenciaAcumulada.back() / 2;
+    for(size_t i = 0; i < frecuenciaAcumulada.size(); i++) {
+        if(mitad <= frecuenciaAcumulada[i]) return i;
     }
-
-    if(i == 0) {
-
-      medianaIntervalos = intervalos[i].first + (ultimaP / frecuencias[i]) * amplitud;
-
-    }
-
-    break;
-    }
-
-}
-return medianaIntervalos;
+    return frecuenciaAcumulada.size() - 1; // fallback
 }
 
-int encontrarIndiceModal(const vector<int>& frecuencias) {
+double calcularMedianaIntervalos(
+    const vector<pair<double, double>>& intervalos,
+    const vector<int>& frecuencias,
+    const vector<int>& frecuenciaAcumulada,
+    double amplitud)
+{
+    size_t i = indiceIntervaloMediana(frecuenciaAcumulada);
+    double ultimaP = frecuenciaAcumulada.back() / 2;
+
+    if(i == 0) return intervalos[i].first + (ultimaP / frecuencias[i]) * amplitud;
+    return intervalos[i].first + ((ultimaP - frecuenciaAcumulada[i-1]) / frecuencias[i]) * amplitud;
+}
+
+
+size_t encontrarIndiceModal(const vector<int>& frecuencias) {
 
     int indiceModa = 0;
 
@@ -206,13 +195,13 @@ double calcularProporcion(const vector<int>& frecuencias,
     }
     else if (indiceModa == 0) {
         // primer intervalo → solo bajada
-        subida = 0;
+        subida = frecuencias[indiceModa];
         bajada = frecuencias[indiceModa] - frecuencias[indiceModa + 1];
     }
     else {
         // último intervalo → solo subida
         subida = frecuencias[indiceModa] - frecuencias[indiceModa - 1];
-        bajada = 0;
+        bajada = frecuencias[indiceModa];
     }
 
     proporcion = subida / static_cast<double>(subida + bajada);
@@ -312,46 +301,24 @@ return CV * 100;
 
 }
 
-void mostrarInfoIntervalos(double rango, int clases, double amplitud) {
+void valos (const resultadosEstadisticos& r) {
 
     cout << "--------------------------------------------------------------------------------\n";
 
-    cout << "Rango (datos): " << rango << "\n";
+    cout << "Rango (datos): " << r.rango << "\n";
 
-    cout << "Clases: " << clases << "\n";
+    cout << "Clases: " << r.clases << "\n";
 
-    cout << "Amplitud (Sturges): " << amplitud << "\n";
-}
-
-void valos (string interpretacionCVp,
-            string interpretacionCVm,
-            double cvP,
-            double cvM,
-            double desvioM,
-            double desvioP,
-            double varianzaM,
-            double varianzaP,
-            double rango,
-            double moda,
-            double mediana,
-            double media,
-            const vector<double>& marcasDeClase,
-const vector <pair<double, double>>& intervalos,
-                             vector <int>& frecuencias,
-                             vector <int> & frecuenciaAcumulada,
-                             vector<double>& frecuenciaRelativa,
-                             vector<double>& frecuenciaRP,
-                             vector <double>& frecuenciaRA) {
-
+    cout << "Amplitud (Sturges): " << r.amplitud << "\n";
 
     cout << "\n";
     cout << "-------------------------------INTERVALOS----------------------------------------\n";
 
     cout << "\n";
 
-    for(size_t i = 0; i < intervalos.size(); i++) {
+    for(size_t i = 0; i < r.intervalos.size(); i++) {
 
-    cout << "[" <<intervalos[i].first << ", " << intervalos[i].second << "]\n";
+    cout << "[" <<r.intervalos[i].first << ", " << r.intervalos[i].second << "]\n";
 
 }
     cout << "\n";
@@ -359,30 +326,30 @@ const vector <pair<double, double>>& intervalos,
 
         cout << " marcas de clase | fi | fa | fr | fr% | fra\n\n";
 
-        cout << marcasDeClase[0] << " | " << frecuencias[0] << " | "  << frecuenciaAcumulada[0] << " | ";
-        cout << frecuenciaRelativa[0] << " | " << frecuenciaRP[0] << "%" << " | " << frecuenciaRA[0] << "\n";
+        cout << r.marcasDeClase[0] << " | " << r.frecuencias[0] << " | "  << r.frecuenciaAcumulada[0] << " | ";
+        cout << r.frecuenciaRelativa[0] << " | " << r.frecuenciaRP[0] << "%" << " | " << r.frecuenciaRA[0] << "\n";
 
-        for(size_t i = 1; i < frecuencias.size(); i++) {
+        for(size_t i = 1; i < r.frecuencias.size(); i++) {
 
-        cout << marcasDeClase[i] << " | " << frecuencias[i] << " | "  << frecuenciaAcumulada[i] << " | ";
-        cout << frecuenciaRelativa[i] << " | " << frecuenciaRP[i]<< "%" << " | " << frecuenciaRA[i] << "\n\n";
+        cout << r.marcasDeClase[i] << " | " << r.frecuencias[i] << " | "  << r.frecuenciaAcumulada[i] << " | ";
+        cout << r.frecuenciaRelativa[i] << " | " << r.frecuenciaRP[i]<< "%" << " | " << r.frecuenciaRA[i] << "\n\n";
         }
 
     cout << "-------------------------MEDIDAS DE TENDENCIA------------------------------------\n";
 
-    cout << "Media: "<< media << "\n";
-    cout << "Mediana: " << mediana << "\n";
-    cout << "Moda: " << moda << "\n";
+    cout << "Media: "<< r.media << "\n";
+    cout << "Mediana: " << r.mediana << "\n";
+    cout << "Moda: " << r.moda << "\n";
 
     cout << "-------------------------MEDIDAS DE DISPERSION-----------------------------------\n";
 
-    cout << "Rango: " << rango << "\n";
-    cout << "Varianza Poblacional: "<< varianzaP << "\n";
-    cout << "Varianza Muestral: " << varianzaM << "\n";
-    cout << "Desvío Poblacional: " << desvioP << "\n";
-    cout << "Desvío Muestral: " << desvioM << "\n";
-    cout << "CV poblacional: " << cvP << "% : " << interpretacionCVp << "\n";
-    cout << "CV muestral: " << cvM << "% : " << interpretacionCVm << "\n";
+    cout << "Rango: " << r.rango << "\n";
+    cout << "Varianza Poblacional: "<< r.varianzaP << "\n";
+    cout << "Varianza Muestral: " << r.varianzaM << "\n";
+    cout << "Desvío Poblacional: " << r.desvioP << "\n";
+    cout << "Desvío Muestral: " << r.desvioM << "\n";
+    cout << "CV poblacional: " << r.cvP << "% : " << r.interpretacionCVp << "\n";
+    cout << "CV muestral: " << r.cvM << "% : " << r.interpretacionCVm << "\n";
 
     cout << "-----------------------------------------------------------------------------------\n";
 }

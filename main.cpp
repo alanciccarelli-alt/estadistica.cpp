@@ -16,9 +16,9 @@ int main() {
         cout << "-------------------------CALCULADORA: ESTADISTICA DESCRIPTIVA---------------------\n\n";
 
 
-        cout << "1 - Dato individuales\n\n";
+        cout << "1 - Datos individuales\n\n";
 
-        cout << "2 - Cálculo de intervalos\n\n";
+        cout << "2 - Calculo de intervalos\n\n";
 
 
         cout << "----------------------------------------------------------------------------------\n\n";
@@ -33,148 +33,98 @@ int main() {
 
         switch (opcion) {
 
-        case 1: {
+case 1: {
+    resultadosEstadisticos r;
 
+    int cantidad = totalDatos();
+    r.datos = ingresarDatos(cantidad);
 
-            int cantidad = totalDatos();
+    int dec = pedirDecimales();
+    aplicarDecimales(dec);
 
+    // Llenamos directamente los vectores dentro del struct
+    tablaDeFrecuencias(
+        r.datos,
+        r.marcasDeClase,             // se llena dentro de la función
+        r.frecuencias,
+        r.frecuenciaAcumulada,
+        r.frecuenciaRelativa,
+        r.frecuenciaRP,
+        r.frecuenciaRA
+    );
 
-            vector <double> valores;
-            vector <int> frecuencias;
-            vector <double> frecuenciaAcumulada;
-            vector <double> frecuenciaRelativa;
-            vector <double> frecuenciaRP;
-            vector <double> frecuenciaRA;
-            vector <double> datos = ingresarDatos(cantidad);
+    r.media = calcularMedia(r.datos);
+    r.mediana = calcularMediana(r.datos);
+    r.moda = calcularModa(r.datos, r.frecuencias);
 
-            mostrarDecimales();
+    r.rango = calcularRango(r.datos);
+    r.varianzaP = calcularVarianzaPoblacional(r.datos);
+    r.varianzaM = calcularVarianzaMuestral(r.datos);
+    r.desvioP = calcularDesvioPoblacional(r.datos);
+    r.desvioM = calcularDesvioMuestral(r.datos);
+    r.cvP = CVpoblacional(r.datos);
+    r.cvM = CVmuestral(r.datos);
 
-            tablaDeFrecuencias(
-            datos,
-            valores,
-            frecuencias,
-            frecuenciaAcumulada,
-            frecuenciaRelativa,
-            frecuenciaRP,
-            frecuenciaRA);
+    r.interpretacionCVp = interpretacionCV(r.cvP);
+    r.interpretacionCVm = interpretacionCV(r.cvM);
 
-            double media = calcularMedia(datos);
-            double mediana = calcularMediana (datos);
-            double moda = calcularModa(datos, frecuencias);
+    mostrarResultados(r);
 
-            double rango = calcularRango(datos);
-            double varianzaP = calcularVarianzaPoblacional(datos);
-            double varianzaM = calcularVarianzaMuestral(datos);
-            double desvioP = calcularDesvioPoblacional(datos);
-            double desvioM = calcularDesvioMuestral(datos);
-            double cvP = CVpoblacional(datos);
-            double cvM = CVmuestral(datos);
+    break;
+}
 
-            string interpretacionCVp = interpretacionCV(cvP);
-            string interpretacionCVm = interpretacionCV(cvM);
+case 2: {
 
+    resultadosEstadisticos r;
 
-            mostrarResultados(
-            interpretacionCVp,
-            interpretacionCVm,
-            cvP,
-            cvM,
-            desvioP,
-            desvioM,
-            varianzaP,
-            varianzaM,
-            rango,
-            moda,
-            media,
-            mediana,
-            datos,
-            valores,
-            frecuencias,
-            frecuenciaAcumulada,
-            frecuenciaRelativa,
-            frecuenciaRP,
-            frecuenciaRA);
+    // 1. Ingresar datos
+    int cantidad = totalDatos();
+    r.datos = ingresarDatos(cantidad);
 
+    // 2. Pedir decimales
+    int dec = pedirDecimales();
+    aplicarDecimales(dec);
 
-            break;
-        }
-         case 2: {
+    // 3. Calcular rango, clases y amplitud
+    r.rangoDatos = calcularRango(r.datos);
+    r.clases = calcularClasesSturges(r.datos.size());
+    r.amplitud = calcularAmplitud(r.rangoDatos, r.clases);
 
-            int cantidad = totalDatos();
+    // 4. Calcular intervalos
+    r.intervalos = calcularIntervalos(r.datos, r.amplitud, r.clases);
 
-            vector<double> datos = ingresarDatos(cantidad);
-            vector <pair<double, double>> intervalos;
-            vector<int> frecuencias;
-            vector<int> frecuenciaAcumulada;
-            vector<double> frecuenciaRelativa;
-            vector<double> frecuenciaRP;
-            vector<double> frecuenciaRA;
+    // 5. Calcular marcas de clase
+    r.marcasDeClase = calcularPuntosMedios(r.intervalos);
 
-            double rangoDatos = calcularRango(datos);
+    // 6. Tabla de frecuencias
+    tablaDeFrecuenciasIntervalos(
+        r.datos,
+        r.intervalos,
+        r.frecuencias,
+        r.frecuenciaAcumulada,
+        r.frecuenciaRelativa,
+        r.frecuenciaRP,
+        r.frecuenciaRA
+    );
 
-            int clases = calcularClasesSturges(datos.size());
+    // 7. Medidas estadísticas
+    r.media = calcularMediaIntervalos(r.intervalos, r.frecuencias);
+    r.mediana = calcularMedianaIntervalos(r.intervalos, r.frecuencias, r.frecuenciaAcumulada, r.amplitud);
+    r.moda = calcularModaIntervalos(r.intervalos, r.frecuencias, r.amplitud);
 
-            double amplitud = calcularAmplitud(rangoDatos, clases);
+    r.rango = rangoDispersion(r.intervalos);
+    r.varianzaP = calcularVarianzaPoblacionalIntervalos(r.marcasDeClase, r.frecuencias, r.media, r.frecuenciaAcumulada);
+    r.varianzaM = calcularVarianzaMuestralIntervalos(r.marcasDeClase, r.frecuencias, r.media, r.frecuenciaAcumulada);
+    r.desvioP = calcularDesvioPoblacionalIntervalos(r.varianzaP);
+    r.desvioM = calcularDesvioMuestralIntervalos(r.varianzaM);
+    r.cvP = CVpoblacionalIntervalos(r.desvioP, r.media);
+    r.cvM = CVmuestralIntervalos(r.desvioM, r.media);
 
+    r.interpretacionCVp = interpretacionCV(r.cvP);
+    r.interpretacionCVm = interpretacionCV(r.cvM);
 
-            mostrarDecimales();
-
-            intervalos = calcularIntervalos(
-            datos,
-            amplitud,
-            clases);
-
-            vector<double> marcasDeClase = calcularPuntosMedios(intervalos);
-
-            tablaDeFrecuenciasIntervalos(
-            datos,
-            intervalos,
-            frecuencias,
-            frecuenciaAcumulada,
-            frecuenciaRelativa,
-            frecuenciaRP,
-            frecuenciaRA);
-
-            int indiceModa = encontrarIndiceModal(frecuencias);
-
-            double proporcion = calcularProporcion(frecuencias, indiceModa);
-
-            double media = calcularMediaIntervalos(intervalos, frecuencias);
-            double mediana = calcularMedianaIntervalos(intervalos, frecuencias, frecuenciaAcumulada, amplitud);
-            double moda = calcularModaIntervalos(intervalos, frecuencias, amplitud);
-
-            double rango = rangoDispersion(intervalos);
-            double varianzaP = calcularVarianzaPoblacionalIntervalos(marcasDeClase, frecuencias, media, frecuenciaAcumulada);
-            double varianzaM = calcularVarianzaMuestralIntervalos(marcasDeClase, frecuencias, media, frecuenciaAcumulada);
-            double desvioP = calcularDesvioPoblacionalIntervalos(varianzaP);
-            double desvioM = calcularDesvioMuestralIntervalos(varianzaM);
-            double cvP = CVpoblacionalIntervalos(desvioP, media);
-            double cvM = CVmuestralIntervalos(desvioM, media);
-
-            string interpretacionCVp = interpretacionCV(cvP);
-            string interpretacionCVm = interpretacionCV(cvM);
-
-            valos(
-            interpretacionCVp,
-            interpretacionCVm,
-            cvP,
-            cvM,
-            desvioM,
-            desvioP,
-            varianzaM,
-            varianzaP,
-            rango,
-            moda,
-            mediana,
-            media,
-            marcasDeClase,
-            intervalos,
-            frecuencias,
-            frecuenciaAcumulada,
-            frecuenciaRelativa,
-            frecuenciaRP,
-            frecuenciaRA);
-
+    // 8. Mostrar resultados
+    valos(r);
 
             break;
 }

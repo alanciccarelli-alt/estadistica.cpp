@@ -55,29 +55,29 @@
 	<vector>
 	<iostream>
 
-1770613076 source:c:\users\wz\desktop\git\funciones.cpp
+1770905759 source:c:\users\wz\desktop\git\funciones.cpp
 	"funciones.h"
 	<iostream>
 	<algorithm>
 	<cmath>
 	<iomanip>
 
-1770688002 c:\users\wz\desktop\git\funciones.h
+1770950945 c:\users\wz\desktop\git\funciones.h
 	<vector>
 	<string>
 
-1770684970 source:c:\users\wz\desktop\git\main.cpp
+1770950945 source:c:\users\wz\desktop\git\main.cpp
 	<string>
 	<iostream>
 	<iomanip>
 	"funciones.h"
 	"intervalos.h"
 
-1770698037 c:\users\wz\desktop\git\intervalos.h
+1770911689 c:\users\wz\desktop\git\intervalos.h
 	<vector>
 	<utility>
 
-1770698037 source:c:\users\wz\desktop\git\intervalos.cpp
+1770912487 source:c:\users\wz\desktop\git\intervalos.cpp
 	"funciones.h"
 	"intervalos.h"
 	<cmath>
