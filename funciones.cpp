@@ -320,8 +320,9 @@ void mostrarResultados(const resultadosEstadisticos& r)
 
     cout << "--------------------------------DATOS ORDENADOS-----------------------------------\n\n";
 
-for (double x : r.datos) {
-    cout << "- " << x << " ";
+    for (size_t i = 0; i < r.datos.size(); i++) {
+
+    cout << "- " << r.datos[i] << " ";
 
 }
 
@@ -344,28 +345,18 @@ for (double x : r.datos) {
 
     cout << "---------------------------DIAGRAMA DE BARRAS------------------------------------\n\n";
 
-int maxNivel = r.frecuencias[0];
-for (int f : r.frecuencias) {
-    if (f > maxNivel)
-        maxNivel = f;
+        for (size_t i = 0; i < r.frecuencias.size(); i++) {
+
+        cout << r.marcasDeClase[i] << " ";
+
+        for (int j = 0; j < r.frecuencias[i]; j++) {
+            cout << ">";
+        }
+
+        cout << " (" << r.frecuencias[i] << ")\n";
+
 }
 
-  for (int nivel = maxNivel; nivel >= 1; nivel--) {
-    for (size_t i = 0; i < r.frecuencias.size(); i++) {
-        if (r.frecuencias[i] >= nivel)
-            cout << " O ";
-        else
-            cout << "   ";
-    }
-
-    cout << "\n";
-}
-
-    for(size_t i = 0; i < r.marcasDeClase.size(); i++) {
-
-        cout << " " << r.marcasDeClase [i] <<  " ";
-
-    }
 
     cout << "\n\n";
 

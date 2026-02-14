@@ -322,6 +322,8 @@ void valos (const resultadosEstadisticos& r) {
 
 }
     cout << "\n";
+
+
     cout << "---------------------------TABLA DE FRECUENCIAS------------------------------------\n\n";
 
         cout << " marcas de clase | fi | fa | fr | fr% | fra\n\n";
@@ -334,6 +336,22 @@ void valos (const resultadosEstadisticos& r) {
         cout << r.marcasDeClase[i] << " | " << r.frecuencias[i] << " | "  << r.frecuenciaAcumulada[i] << " | ";
         cout << r.frecuenciaRelativa[i] << " | " << r.frecuenciaRP[i]<< "%" << " | " << r.frecuenciaRA[i] << "\n\n";
         }
+
+    cout << "------------------------------HISTOGRAMA---------------------------------------\n\n";
+
+        for (size_t i = 0; i < r.clases; i++) {
+
+    cout << "[" << r.intervalos[i].first << ", " << r.intervalos[i].second << "] ";
+
+        for (int j = 0; j < r.frecuencias[j]; j++) {
+            cout << ">";
+        }
+
+        cout << " (" << r.frecuencias[i] << ")\n";
+
+}
+
+cout << "\n\n";
 
     cout << "-------------------------MEDIDAS DE TENDENCIA------------------------------------\n";
 

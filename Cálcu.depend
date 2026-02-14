@@ -55,7 +55,7 @@
 	<vector>
 	<iostream>
 
-1770905759 source:c:\users\wz\desktop\git\funciones.cpp
+1771039752 source:c:\users\wz\desktop\git\funciones.cpp
 	"funciones.h"
 	<iostream>
 	<algorithm>
@@ -77,7 +77,7 @@
 	<vector>
 	<utility>
 
-1770912487 source:c:\users\wz\desktop\git\intervalos.cpp
+1771040153 source:c:\users\wz\desktop\git\intervalos.cpp
 	"funciones.h"
 	"intervalos.h"
 	<cmath>
